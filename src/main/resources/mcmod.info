@@ -1,0 +1,29 @@
+[
+{
+
+  "modid": "amazingstands",
+
+  "name": "Amazing Stands",
+
+  "description": "Jazz up your armor room with... AMAZING STANDS!  More fun and more options!",
+
+  "version": "1.0",
+
+  "mcversion": "1.8",
+
+  "url": "",
+
+  "updateUrl": "",
+
+  "authorList": ["Code Shaper"],
+
+  "credits": "Thanks to anyone who has reported a bug and YOU!  Yes YOU, for downloading and using this mod.",
+
+  "logoFile": "",
+
+  "screenshots": [],
+
+  "dependencies": []
+
+}
+]
