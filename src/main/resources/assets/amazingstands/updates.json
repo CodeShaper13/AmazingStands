@@ -1,0 +1,16 @@
+{
+  "homepage": "www.youtube.com",
+  "1.12.2": {
+    "0.9": "TEST 2 (0.9)",
+	"0.8", "TEST 1 (0.8)"
+    // List all versions of your mod for the given Minecraft version, along with their changelogs
+  },
+  ...
+  "promos": {
+    "1.12.2-latest": "0.9",
+    // Declare the latest "bleeding-edge" version of your mod for the given Minecraft version
+    "1.12.2-recommended": "0.8",
+    // Declare the latest "stable" version of your mod for the given Minecraft version
+    ...
+  }
+}

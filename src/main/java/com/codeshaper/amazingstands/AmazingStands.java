@@ -11,11 +11,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = AmazingStands.MOD_ID, version = AmazingStands.VERSION, name = "Amazing Stands")
+@Mod(modid = AmazingStands.MOD_ID, version = AmazingStands.VERSION, updateJSON = "https://github.com/RangerPJ/AmazingStands/tree/master/src/main/resources/assets/amazingstands/updates.json", name = "Amazing Stands")
 public class AmazingStands {
 
 	public static final String MOD_ID = "amazingstands";
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "0.9";
 
 	@SidedProxy(clientSide = "com.codeshaper.amazingstands.proxy.ProxyClient", serverSide = "com.codeshaper.amazingstands.proxy.ProxyCommon")
 	public static ProxyCommon proxy;
