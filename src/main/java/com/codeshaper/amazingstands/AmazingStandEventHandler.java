@@ -128,13 +128,16 @@ public class AmazingStandEventHandler {
 				}
 				// Set model.
 				else if (heldItem == Items.SKULL) {
-					int i = heldStack.getMetadata() + 1;
-					if (i != cap.getModelId()) {
-						cap.setModelId(i);
-						PacketManager.INSTANCE.sendToDimension(
-								new PacketModelId(armorStand.getEntityId(), cap.getModelId()), armorStand.dimension);
-						this.removeItems(player, 1);
-						somethingHappened = true;
+					int meta = heldStack.getMetadata();
+					if(meta <= 4) {
+						int i = meta + 1;
+						if (i != cap.getModelId()) {
+							cap.setModelId(i);
+							PacketManager.INSTANCE.sendToDimension(
+									new PacketModelId(armorStand.getEntityId(), cap.getModelId()), armorStand.dimension);
+							//this.removeItems(player, 1);
+							somethingHappened = true;
+						}
 					}
 				}
 				// Gravity.

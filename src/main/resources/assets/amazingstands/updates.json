@@ -1,12 +1,11 @@
 {
-	"homepage": "www.youtube.com",
+	"homepage": "www.minecraftforum.com",
 	"1.12.2": {
-		"0.9": "TEST 2 (0.9)",
-		"0.8": "TEST 1 (0.8)"
+		"1.0": "Initial Version"
 	},
 
 	"promos": {
-		"1.12.2-latest": "0.9",
-		"1.12.2-recommended": "0.8"
+		"1.12.2-latest": "1.0",
+		"1.12.2-recommended": "1.0"
 	}
 }
