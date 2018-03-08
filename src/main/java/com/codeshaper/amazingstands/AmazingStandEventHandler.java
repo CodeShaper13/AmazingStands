@@ -129,13 +129,12 @@ public class AmazingStandEventHandler {
 				// Set model.
 				else if (heldItem == Items.SKULL) {
 					int meta = heldStack.getMetadata();
-					if(meta <= 4) {
+					if(meta <= 4) { // Use 5 to enable endermen
 						int i = meta + 1;
 						if (i != cap.getModelId()) {
 							cap.setModelId(i);
 							PacketManager.INSTANCE.sendToDimension(
 									new PacketModelId(armorStand.getEntityId(), cap.getModelId()), armorStand.dimension);
-							//this.removeItems(player, 1);
 							somethingHappened = true;
 						}
 					}
@@ -181,8 +180,10 @@ public class AmazingStandEventHandler {
 					List<PotionEffect> list = PotionUtils.getEffectsFromStack(heldStack);
 					for (PotionEffect effect : list) {
 						if (effect.getPotion() == MobEffects.INVISIBILITY) {
-							this.removeItems(player, 1);
-							inventory.setInventorySlotContents(index, new ItemStack(Items.GLASS_BOTTLE));
+							if(!player.capabilities.isCreativeMode) {
+								this.removeItems(player, 1);
+								inventory.setInventorySlotContents(index, new ItemStack(Items.GLASS_BOTTLE));	
+							}
 							armorStand.setInvisible(true);
 							somethingHappened = true;
 							break;

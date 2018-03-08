@@ -1,4 +1,4 @@
-package com.codeshaper.amazingstands.armorStandRendering;
+package com.codeshaper.amazingstands.renderer.entity.layers;
 
 import com.codeshaper.amazingstands.capabilities.AmazingStandDataProvider;
 import com.codeshaper.amazingstands.capabilities.IAmazingStandData;

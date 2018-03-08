@@ -1,13 +1,15 @@
 package com.codeshaper.amazingstands.armorStandRendering;
 
-
 import com.codeshaper.amazingstands.Util;
 import com.codeshaper.amazingstands.capabilities.AmazingStandDataProvider;
+import com.codeshaper.amazingstands.renderer.entity.layers.LayerArmorStandBasePlate;
+import com.codeshaper.amazingstands.renderer.entity.layers.LayerArmorStandEndermanEyes;
 
 import net.minecraft.client.model.ModelArmorStand;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelCreeper;
+import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.client.model.ModelZombie;
@@ -29,6 +31,7 @@ public class RenderArmorStandNew extends RenderArmorStand {
 	private static final ResourceLocation creeperTexture = new ResourceLocation("textures/entity/creeper/creeper.png");
 	private static final ResourceLocation steveTexture = new ResourceLocation("textures/entity/steve.png");
 	private static final ResourceLocation alexTexture = new ResourceLocation("textures/entity/alex.png");
+	private static final ResourceLocation endermanTexture = new ResourceLocation("textures/entity/enderman/enderman.png");
 
 	private static final ModelArmorStand armorStandModel = new ModelArmorStand();
 	private static final ModelSkeleton skeletonModel = new ModelSkeleton() {
@@ -62,30 +65,8 @@ public class RenderArmorStandNew extends RenderArmorStand {
 			this.isChild = false;
 		}
 	};
-	private static final ModelPlayer steveModel = new ModelPlayer(0.0f, false) {
-		@Override
-		public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount,
-				float partialTickTime) {
-		}
-
-		@Override
-		public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
-				float headPitch, float scaleFactor, Entity entityIn) {
-			Util.func(entityIn, this);
-		}
-	};
-	private static final ModelPlayer alexModel = new ModelPlayer(0.0f, true) {
-		@Override
-		public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount,
-				float partialTickTime) {
-		}
-
-		@Override
-		public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
-				float headPitch, float scaleFactor, Entity entityIn) {
-			Util.func(entityIn, this);
-		}
-	};
+	private static final ModelPlayer steveModel = new NewPlayerModel(0.0f, false);
+	private static final ModelPlayer alexModel = new NewPlayerModel(0.0f, true);
 	private static final ModelCreeper creeperModel = new ModelCreeper() {
 		@Override
 		public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount,
@@ -120,10 +101,24 @@ public class RenderArmorStandNew extends RenderArmorStand {
 			this.leg1.rotateAngleZ = 0.017453292F * entityarmorstand.getRightLegRotation().getZ();
 		}
 	};
+	public static final ModelEnderman endermanModel = new ModelEnderman(0.0f) {		
+		@Override
+		public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount,
+				float partialTickTime) {
+		}
 
+		@Override
+		public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
+				float headPitch, float scaleFactor, Entity entityIn) {
+			Util.func(entityIn, this);
+			this.bipedRightArm.rotationPointX = -5.0f;
+		}
+	};
+	
 	public RenderArmorStandNew(RenderManager manager) {
 		super(manager);
 		
+		this.addLayer(new LayerArmorStandEndermanEyes(this));
 		this.addLayer(new LayerArmorStandBasePlate(this));
 	}
 	
@@ -134,18 +129,21 @@ public class RenderArmorStandNew extends RenderArmorStand {
 
 	@Override
 	public void doRender(EntityArmorStand entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		RenderArmorStandNew.armorStandModel.isChild = entity.isChild();
-		boolean flag1 = entity.getShowArms();
-		RenderArmorStandNew.armorStandModel.bipedLeftArm.isHidden = !flag1;
-		RenderArmorStandNew.armorStandModel.bipedRightArm.isHidden = !flag1;
-		
+		boolean flag = entity.getShowArms();
 		this.mainModel = this.getModelForRender(entity);
+		
+		RenderArmorStandNew.armorStandModel.bipedLeftArm.isHidden = !flag;
+		RenderArmorStandNew.armorStandModel.bipedRightArm.isHidden = !flag;
+		
+		RenderArmorStandNew.armorStandModel.isChild = entity.isChild();
+		
+		// Hide vanilla base if the model is an armor stand.
 		if (this.mainModel instanceof ModelArmorStand) {
 			((ModelArmorStand) this.mainModel).standBase.isHidden = true;
 		}
 
+		// Set visibility of model arms.
 		if (this.mainModel instanceof ModelBiped) {
-			boolean flag = entity.getShowArms();
 			ModelBiped mb = ((ModelBiped) this.mainModel);
 			mb.bipedLeftArm.isHidden = !flag;
 			mb.bipedRightArm.isHidden = !flag;
@@ -156,8 +154,7 @@ public class RenderArmorStandNew extends RenderArmorStand {
 
 	@Override
 	public ResourceLocation getEntityTexture(EntityArmorStand armorStand) {
-		int i = armorStand.getCapability(AmazingStandDataProvider.CAPABILITY, null).getModelId();
-		switch (i) {
+		switch (armorStand.getCapability(AmazingStandDataProvider.CAPABILITY, null).getModelId()) {
 		case 0:
 			return armorStandTexture;
 		case 1:
@@ -170,6 +167,8 @@ public class RenderArmorStandNew extends RenderArmorStand {
 			return steveTexture;
 		case 5:
 			return creeperTexture;
+		case 6:
+			return endermanTexture;
 		default:
 			return armorStandTexture;
 		}
@@ -189,6 +188,9 @@ public class RenderArmorStandNew extends RenderArmorStand {
 		super.preRenderCallback(entitylivingbaseIn, partialTickTime);
 	}
 
+	/**
+	 * Returns a model to render with based on the Armor Stands model id.
+	 */
 	private ModelBase getModelForRender(EntityArmorStand armorStand) {
 		switch (armorStand.getCapability(AmazingStandDataProvider.CAPABILITY, null).getModelId()) {
 		case 0:
@@ -202,6 +204,8 @@ public class RenderArmorStandNew extends RenderArmorStand {
 			return steveModel;
 		case 5:
 			return creeperModel;
+		case 6:
+			return endermanModel;
 		default:
 			return armorStandModel;
 		}
